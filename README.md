@@ -1,4 +1,4 @@
-[![CI](https://github.com/gustavoteixeiradev/Reactive-Voting-Session-API/actions/workflows/gradle.yml/badge.svg)](https://github.com/gustavoteixeiradev/Reactive-Voting-Session-API/actions/workflows/gradle.yml)
+[![CI](https://github.com/gustavoteixeiradev/Reactive-Voting-Session-API/actions/workflows/devops.yml/badge.svg)](https://github.com/gustavoteixeiradev/Reactive-Voting-Session-API/actions/workflows/devops.yml)
 
 # Reactive Voting Session API
 
