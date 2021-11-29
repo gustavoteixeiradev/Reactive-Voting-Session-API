@@ -1,8 +1,11 @@
 package dev.gustavoteixeira.votingsession.service.impl;
 
+import dev.gustavoteixeira.votingsession.client.UserInfoClient;
 import dev.gustavoteixeira.votingsession.dto.request.AgendaRequestDto;
+import dev.gustavoteixeira.votingsession.dto.request.VoteRequestDto;
 import dev.gustavoteixeira.votingsession.dto.response.AgendaResponseDto;
 import dev.gustavoteixeira.votingsession.entity.Agenda;
+import dev.gustavoteixeira.votingsession.entity.Vote;
 import dev.gustavoteixeira.votingsession.exception.CreatingAgendaException;
 import dev.gustavoteixeira.votingsession.repository.AgendaRepository;
 import dev.gustavoteixeira.votingsession.service.AgendaService;
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -20,6 +25,9 @@ public class AgendaServiceImpl implements AgendaService {
 
     @Autowired
     private AgendaRepository repository;
+
+    @Autowired
+    private UserInfoClient userInfoClient;
 
     public Mono<String> createAgenda(Mono<AgendaRequestDto> agendaRequest) {
         log.info("AgendaServiceImpl.createAgenda - Start.");
@@ -43,10 +51,35 @@ public class AgendaServiceImpl implements AgendaService {
         log.info("AgendaServiceImpl.startAgenda - Start - AgendaId: {};", agendaId);
         return repository
                 .findById(agendaId)
-                .doOnNext(AgendaUtils::verifyIfAgendaIsAlreadyOpen)
-                .doOnNext(AgendaUtils::verifyIfAgendaHasAlreadyBeenClosed)
+                .doOnNext(AgendaUtils::agendaMustNotBeOpen)
+                .doOnNext(AgendaUtils::agendaMustNotHaveBeenClosed)
                 .doOnNext(agenda -> agenda.setStartTime(LocalDateTime.now()))
                 .flatMap(repository::save)
+                .then();
+    }
+
+    @Override
+    public Mono<Void> voteAgenda(String agendaId, Mono<VoteRequestDto> voteRequest) {
+        log.info("AgendaServiceImpl.voteAgenda - Start - AgendaId: {};", agendaId);
+        return voteRequest
+                .doOnNext(vote -> userInfoClient
+                        .getUserInfo(vote.getAssociate())
+                        .doOnNext(AgendaUtils::verifyIfAssociateIsAbleToVote)
+                        .subscribe((userInfo) -> log.info("==========>: {};", userInfo.getStatus())))
+                .flatMap(vote -> repository
+                        .findById(agendaId)
+                        .doOnNext(AgendaUtils::agendaMustBeOpen)
+                        .doOnNext(AgendaUtils::agendaMustNotHaveBeenClosed)
+                        .doOnNext(agenda -> AgendaUtils.verifyIfAssociateHaveNotVotedYet(agenda, vote))
+                        .doOnNext(agenda -> {
+                            List<Vote> votes = agenda.getVotes() == null ? new ArrayList<>() : agenda.getVotes();
+                            votes.add(Vote.builder()
+                                    .associate(vote.getAssociate())
+                                    .choice(vote.getChoice())
+                                    .build());
+                            agenda.setVotes(votes);
+                        })
+                        .flatMap(repository::save))
                 .then();
     }
 

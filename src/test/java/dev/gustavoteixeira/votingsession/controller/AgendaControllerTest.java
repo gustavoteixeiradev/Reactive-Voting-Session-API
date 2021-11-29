@@ -1,6 +1,7 @@
 package dev.gustavoteixeira.votingsession.controller;
 
 import dev.gustavoteixeira.votingsession.dto.request.AgendaRequestDto;
+import dev.gustavoteixeira.votingsession.dto.request.VoteRequestDto;
 import dev.gustavoteixeira.votingsession.dto.response.AgendaResponseDto;
 import dev.gustavoteixeira.votingsession.service.AgendaService;
 import org.junit.jupiter.api.Test;
@@ -78,6 +79,21 @@ public class AgendaControllerTest {
 
         webClient.patch()
                 .uri("/api/v1/agenda/{agendaId}/start", agendaId)
+                .exchange()
+                .expectStatus()
+                .isOk();
+    }
+
+    @Test
+    public void shouldVoteOnAgenda() {
+        var agendaId = "1";
+        var vote = VoteRequestDto.builder().associate("70442308060").choice("Sim").build();
+
+        when(service.voteAgenda(anyString(), any())).thenReturn(Mono.empty());
+
+        webClient.post()
+                .uri("/api/v1/agenda/{agendaId}/vote", agendaId)
+                .body(Mono.just(vote), VoteRequestDto.class)
                 .exchange()
                 .expectStatus()
                 .isOk();

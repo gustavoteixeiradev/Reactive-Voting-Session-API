@@ -8,6 +8,7 @@ import lombok.Getter;
 public class Vote {
 
     private String associate;
+
     private String choice;
 
 }

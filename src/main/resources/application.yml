@@ -5,3 +5,7 @@ spring:
       auto-index-creation: true
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+
+clients:
+  user-info:
+    url: https://user-info.herokuapp.com/

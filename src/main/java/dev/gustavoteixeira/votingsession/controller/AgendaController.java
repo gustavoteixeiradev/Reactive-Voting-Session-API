@@ -1,6 +1,7 @@
 package dev.gustavoteixeira.votingsession.controller;
 
 import dev.gustavoteixeira.votingsession.dto.request.AgendaRequestDto;
+import dev.gustavoteixeira.votingsession.dto.request.VoteRequestDto;
 import dev.gustavoteixeira.votingsession.dto.response.AgendaResponseDto;
 import dev.gustavoteixeira.votingsession.service.AgendaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,14 @@ public class AgendaController {
     public Mono<ResponseEntity<Void>> startAgenda(@PathVariable String agendaId) {
         return service
                 .startAgenda(agendaId)
+                .map(ResponseEntity::ok);
+    }
+
+    @PostMapping("/{agendaId}/vote")
+    public Mono<ResponseEntity<Void>> voteAgenda(@PathVariable String agendaId,
+                                                 @RequestBody final Mono<VoteRequestDto> voteRequest) {
+        return service
+                .voteAgenda(agendaId, voteRequest)
                 .map(ResponseEntity::ok);
     }
 
