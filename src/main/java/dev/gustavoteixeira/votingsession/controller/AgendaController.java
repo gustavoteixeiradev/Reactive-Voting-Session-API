@@ -1,14 +1,12 @@
 package dev.gustavoteixeira.votingsession.controller;
 
-import dev.gustavoteixeira.votingsession.dto.AgendaRequestDto;
+import dev.gustavoteixeira.votingsession.dto.request.AgendaRequestDto;
+import dev.gustavoteixeira.votingsession.dto.response.AgendaResponseDto;
 import dev.gustavoteixeira.votingsession.service.AgendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
@@ -24,8 +22,23 @@ public class AgendaController {
     @PostMapping
     public Mono<ResponseEntity<Void>> createAgenda(@RequestBody final Mono<AgendaRequestDto> agendaRequest,
                                                    ServerHttpRequest serverRequest) {
-        return service.createAgenda(agendaRequest)
+        return service
+                .createAgenda(agendaRequest)
                 .map(id -> responseCreated(id, serverRequest));
+    }
+
+    @GetMapping("/{agendaId}")
+    public Mono<ResponseEntity<AgendaResponseDto>> getAgenda(@PathVariable String agendaId) {
+        return service
+                .getAgenda(agendaId)
+                .map(ResponseEntity::ok);
+    }
+
+    @PatchMapping("/{agendaId}/start")
+    public Mono<ResponseEntity<Void>> startAgenda(@PathVariable String agendaId) {
+        return service
+                .startAgenda(agendaId)
+                .map(ResponseEntity::ok);
     }
 
     private ResponseEntity<Void> responseCreated(final String id, final ServerHttpRequest serverRequest) {

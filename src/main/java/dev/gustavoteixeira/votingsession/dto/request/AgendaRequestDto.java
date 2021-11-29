@@ -1,14 +1,12 @@
-package dev.gustavoteixeira.votingsession.dto;
+package dev.gustavoteixeira.votingsession.dto.request;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
+@Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class AgendaRequestDto {
 
