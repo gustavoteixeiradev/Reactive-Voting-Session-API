@@ -4,17 +4,17 @@
 
 ## 🙋‍♂️🙋‍♀️🙋💁💁‍♂️💁‍♀️
 
-### API para Sessão de Votação 
+### 🧙 API para Sessão de Votação 
 
 Esse código é a minha implementação utilizando programação Reativa de um desafio técnico para uma oportunidade como
 Desenvolvedor Back-End Java.
 
-### O Desafio
+### ✍️ O Desafio
 
 No cooperativismo, cada associado possui um voto e as decisões são tomadas em assembleias, por votação. A partir disso,
 você precisa criar uma solução back-end para gerenciar essas sessões de votação.
 
-#### Requisitos
+#### 📝 Requisitos
 
 Essa solução deve ser executada na nuvem e promover as seguintes funcionalidades através de uma API REST:
 
