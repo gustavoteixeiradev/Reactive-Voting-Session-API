@@ -27,3 +27,5 @@ de abertura ou 1 minutos por default);
 único e pode votar apenas uma vez por pauta);
 <br>
 ✅ 4. Contabilizar os votos e dar o resultado da votação na pauta. 
+
+
