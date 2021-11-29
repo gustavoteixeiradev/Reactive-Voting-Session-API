@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(SpringExtension.class)
-public class AgendaServiceTest {
+class AgendaServiceTest {
 
     @InjectMocks
     private AgendaServiceImpl service;
@@ -42,7 +42,7 @@ public class AgendaServiceTest {
     private UserInfoClient userInfoClient;
 
     @Test
-    public void shouldCreateAgenda() {
+    void shouldCreateAgenda() {
         var request = Mono.just(AgendaRequestDto.builder()
                 .name("A random name")
                 .duration(1)
@@ -56,12 +56,12 @@ public class AgendaServiceTest {
         StepVerifier
                 .create(result)
                 .consumeNextWith(id ->
-                        assertEquals(id, "1"))
+                        assertEquals("1", id))
                 .verifyComplete();
     }
 
     @Test
-    public void shouldThrowCreatingAgendaException() {
+    void shouldThrowCreatingAgendaException() {
         var request = Mono.just(AgendaRequestDto.builder()
                 .name("A random name")
                 .duration(1)
@@ -79,7 +79,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void shouldGetAgenda() {
+    void shouldGetAgenda() {
         var agendaId = "1";
 
         when(repository.findById(anyString()))
@@ -90,11 +90,11 @@ public class AgendaServiceTest {
         StepVerifier
                 .create(result)
                 .expectNextMatches(agendaResponseDto -> {
-                    assertEquals(agendaResponseDto.getId(), agendaId);
-                    assertEquals(agendaResponseDto.getName(), "A random name");
-                    assertEquals(agendaResponseDto.getDuration(), 1);
-                    assertEquals(agendaResponseDto.getPositiveVotes(), 0);
-                    assertEquals(agendaResponseDto.getNegativeVotes(), 0);
+                    assertEquals(agendaId, agendaResponseDto.getId());
+                    assertEquals("A random name", agendaResponseDto.getName());
+                    assertEquals(1, agendaResponseDto.getDuration());
+                    assertEquals(0, agendaResponseDto.getPositiveVotes());
+                    assertEquals(0, agendaResponseDto.getNegativeVotes());
                     assertFalse(agendaResponseDto.isOpened());
                     assertNull(agendaResponseDto.getStartTime());
                     return true;
@@ -103,7 +103,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void shouldGetAgendaWithVotes() {
+    void shouldGetAgendaWithVotes() {
         var startedTime = LocalDateTime.now().minusMinutes(2);
         var agendaId = "1";
 
@@ -123,12 +123,12 @@ public class AgendaServiceTest {
         StepVerifier
                 .create(result)
                 .expectNextMatches(agendaResponseDto -> {
-                    assertEquals(agendaResponseDto.getId(), agendaId);
-                    assertEquals(agendaResponseDto.getName(), "A random name");
-                    assertEquals(agendaResponseDto.getDuration(), 10);
-                    assertEquals(agendaResponseDto.getPositiveVotes(), 1);
-                    assertEquals(agendaResponseDto.getNegativeVotes(), 1);
-                    assertEquals(agendaResponseDto.getStartTime(), startedTime);
+                    assertEquals(agendaId, agendaResponseDto.getId());
+                    assertEquals("A random name", agendaResponseDto.getName());
+                    assertEquals(10, agendaResponseDto.getDuration());
+                    assertEquals(1, agendaResponseDto.getPositiveVotes());
+                    assertEquals(1, agendaResponseDto.getNegativeVotes());
+                    assertEquals(startedTime, agendaResponseDto.getStartTime());
                     assertTrue(agendaResponseDto.isOpened());
                     return true;
                 })
@@ -136,7 +136,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void shouldStartAgenda() {
+    void shouldStartAgenda() {
         var startedTime = LocalDateTime.now();
         var agendaId = "1";
 
@@ -160,7 +160,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void shouldNotStartAgendaIfItIsAlreadyOpen() {
+    void shouldNotStartAgendaIfItIsAlreadyOpen() {
         var startedTime = LocalDateTime.now().minusMinutes(5);
         var agendaId = "1";
 
@@ -180,7 +180,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void shouldNotStartAgendaIfItHasAlreadyBeenClosed() {
+    void shouldNotStartAgendaIfItHasAlreadyBeenClosed() {
         var startedTime = LocalDateTime.now().minusMinutes(10);
         var agendaId = "1";
 
@@ -200,7 +200,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void shouldVote() {
+    void shouldVote() {
         var agendaId = "1";
         var voteRequest = Mono.just(
                 VoteRequestDto.builder()
@@ -229,7 +229,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void shouldNotVoteOnAgendaIfItIsNotOpen() {
+    void shouldNotVoteOnAgendaIfItIsNotOpen() {
         var agendaId = "1";
         var voteRequest = Mono.just(
                 VoteRequestDto.builder()
@@ -252,7 +252,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void shouldNotVoteOnAgendaIfItIsAlreadyClosed() {
+    void shouldNotVoteOnAgendaIfItIsAlreadyClosed() {
         var agendaId = "1";
         var voteRequest = Mono.just(
                 VoteRequestDto.builder()
@@ -279,7 +279,7 @@ public class AgendaServiceTest {
     }
 
     @Test
-    public void shouldNotVoteOnAgendaIfAssociateAlreadyVoted() {
+    void shouldNotVoteOnAgendaIfAssociateAlreadyVoted() {
         var agendaId = "1";
         var voteRequest = Mono.just(
                 VoteRequestDto.builder()

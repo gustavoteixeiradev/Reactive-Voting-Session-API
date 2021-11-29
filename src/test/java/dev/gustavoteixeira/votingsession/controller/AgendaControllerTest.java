@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(AgendaController.class)
-public class AgendaControllerTest {
+class AgendaControllerTest {
 
     @Autowired
     private WebTestClient webClient;
@@ -30,7 +30,7 @@ public class AgendaControllerTest {
     private AgendaService service;
 
     @Test
-    public void shouldCreateAgenda() {
+    void shouldCreateAgenda() {
         var request = Mono.just(AgendaRequestDto.builder()
                 .name("A random name")
                 .duration(1)
@@ -48,7 +48,7 @@ public class AgendaControllerTest {
     }
 
     @Test
-    public void shouldGetAgenda() {
+    void shouldGetAgenda() {
         LocalDateTime startedTime = LocalDateTime.now().minusMinutes(2);
         var agendaId = "1";
 
@@ -72,7 +72,7 @@ public class AgendaControllerTest {
     }
 
     @Test
-    public void shouldStartAgenda() {
+    void shouldStartAgenda() {
         var agendaId = "1";
 
         when(service.startAgenda(anyString())).thenReturn(Mono.empty());
@@ -85,7 +85,7 @@ public class AgendaControllerTest {
     }
 
     @Test
-    public void shouldVoteOnAgenda() {
+    void shouldVoteOnAgenda() {
         var agendaId = "1";
         var vote = VoteRequestDto.builder().associate("70442308060").choice("Sim").build();
 
