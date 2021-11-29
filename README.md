@@ -2,7 +2,9 @@
 
 # Reactive Voting Session API
 
-### API para Sessão de Votação
+## 🙋‍♂️🙋‍♀️🙋💁💁‍♂️💁‍♀️
+
+### API para Sessão de Votação 
 
 Esse código é a minha implementação utilizando programação Reativa de um desafio técnico para uma oportunidade como
 Desenvolvedor Back-End Java.
