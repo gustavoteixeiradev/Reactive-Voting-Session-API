@@ -1,5 +1,7 @@
 [![CI](https://github.com/gustavoteixeiradev/Reactive-Voting-Session-API/actions/workflows/devops.yml/badge.svg)](https://github.com/gustavoteixeiradev/Reactive-Voting-Session-API/actions/workflows/devops.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gustavoteixeiradev_Reactive-Voting-Session-API&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gustavoteixeiradev_Reactive-Voting-Session-API)
 [![GitHub license](https://img.shields.io/github/license/gustavoteixeiradev/Reactive-Voting-Session-API)](https://github.com/gustavoteixeiradev/Reactive-Voting-Session-API/blob/main/LICENSE)
+[![Docker Hub](https://img.shields.io/badge/DockerHub-image-007396.svg)](https://hub.docker.com/repository/docker/teixeira963/reactive-voting-session-api/general)
 
 # Reactive Voting Session API
 
@@ -42,6 +44,10 @@ de abertura ou 1 minutos por default);
 #### 💙🔗 Para acessar o Health Check:
 
 [![Health Check](https://img.shields.io/badge/Actuator-link-007396.svg)](https://reactive-voting-session-api.herokuapp.com/actuator/health)
+
+#### 🚢🔗 Para acessar o relatório do Sonarcloud:
+
+[![Health Check](https://img.shields.io/badge/Sonarcloud-link-007396.svg)](https://sonarcloud.io/summary/overall?id=gustavoteixeiradev_Reactive-Voting-Session-API)
 
 <br>
 
