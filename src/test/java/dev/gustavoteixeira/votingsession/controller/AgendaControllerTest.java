@@ -1,6 +1,7 @@
 package dev.gustavoteixeira.votingsession.controller;
 
 import dev.gustavoteixeira.votingsession.dto.AgendaRequestDto;
+import dev.gustavoteixeira.votingsession.service.AgendaService;
 import dev.gustavoteixeira.votingsession.service.impl.AgendaServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +23,7 @@ public class AgendaControllerTest {
     private WebTestClient webClient;
 
     @MockBean
-    private AgendaServiceImpl service;
+    private AgendaService service;
 
     @Test
     public void shouldCreateAgenda() {

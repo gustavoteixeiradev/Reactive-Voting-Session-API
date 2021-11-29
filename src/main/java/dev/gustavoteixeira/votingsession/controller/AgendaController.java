@@ -1,7 +1,7 @@
 package dev.gustavoteixeira.votingsession.controller;
 
 import dev.gustavoteixeira.votingsession.dto.AgendaRequestDto;
-import dev.gustavoteixeira.votingsession.service.impl.AgendaServiceImpl;
+import dev.gustavoteixeira.votingsession.service.AgendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -19,7 +19,7 @@ import java.net.URI;
 public class AgendaController {
 
     @Autowired
-    private AgendaServiceImpl service;
+    private AgendaService service;
 
     @PostMapping
     public Mono<ResponseEntity<Void>> createAgenda(@RequestBody final Mono<AgendaRequestDto> agendaRequest,
