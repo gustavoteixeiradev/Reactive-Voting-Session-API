@@ -64,7 +64,6 @@ public class AgendaServiceImpl implements AgendaService {
         return repository
                 .findById(agendaId)
                 .doOnNext(AgendaUtils::agendaMustBeOpen)
-//                .doOnNext(AgendaUtils::agendaMustNotHaveBeenClosed)
                 .flatMap(agenda -> voteRequest.flatMap(vote -> userInfoClient.getUserInfo(vote.getAssociate())
                                 .map(userInfoDto -> {
                                     AgendaUtils.verifyIfAssociateIsAbleToVote(userInfoDto);
@@ -79,7 +78,8 @@ public class AgendaServiceImpl implements AgendaService {
                                     .choice(vote.getChoice())
                                     .build());
                             agenda.setVotes(votes);
-                            return agenda;})
+                            return agenda;
+                        })
                         .flatMap(repository::save))
                 .then();
     }

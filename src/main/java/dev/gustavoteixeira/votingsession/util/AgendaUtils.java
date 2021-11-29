@@ -18,6 +18,9 @@ public class AgendaUtils {
     public static final String POSITIVE_VOTE = "Sim";
     public static final int DEFAULT_DURATION = 1;
 
+    private AgendaUtils() {
+    }
+
     public static AgendaResponseDto toResponseDto(Agenda agenda) {
         return AgendaResponseDto.builder()
                 .id(agenda.getId())
@@ -42,25 +45,25 @@ public class AgendaUtils {
     }
 
     public static void agendaMustBeOpen(Agenda agenda) {
-        log.info("Validating... - agendaMustBeOpen - Status: {}", agenda.getId());
+        log.info("Validando... - Agenda deve estar aberta - Status: {}", agenda.getId());
         if (!isOpened(agenda)) {
-            log.error("Error - Agenda is not open - AgendaId: {}", agenda.getId());
+            log.error("Erro - Agenda não está aberta - AgendaId: {}", agenda.getId());
             throw new AgendaIsNotOpenException();
         }
     }
 
     public static void agendaMustNotHaveBeenClosed(Agenda agenda) {
-        log.info("Validating... - agendaMustNotHaveBeenClosed - Status: {}", agenda.getId());
+        log.info("Validando... - Agenda não deve já ter sido encerrada - Status: {}", agenda.getId());
         if (!isOpened(agenda) && agenda.getStartTime() != null) {
-            log.error("Error - Agenda has already been closed - AgendaId: {}", agenda.getId());
+            log.error("Erro - Agenda já foi encerrada - AgendaId: {}", agenda.getId());
             throw new AgendaHasAlreadyBeenClosedException();
         }
     }
 
     public static void verifyIfAssociateIsAbleToVote(UserInfoDto userInfo) {
-        log.info("Validating... - verifyIfAssociateIsAbleToVote - User status: {}", userInfo.getStatus());
+        log.info("Validando... - Verificando se o associado está apto a votar - User status: {}", userInfo.getStatus());
         if (userInfo.getStatus().equals(UserStatus.UNABLE_TO_VOTE)) {
-            log.error("Error - Associate is not able to vote.");
+            log.error("Erro - Associado não está apto a votar.");
             throw new AssociateIsNotAbleToVoteException();
         }
     }
@@ -72,18 +75,18 @@ public class AgendaUtils {
 
 
     public static void verifyIfAssociateHaveNotVotedYet(Agenda agenda, VoteRequestDto voteRequest) {
-        log.info("Validating... - verifyIfAssociateHaveNotVotedYet - AgendaId: {}, Associate: {}, Choice: {}.",
+        log.info("Validando... - Verificando se o associado já não votou - AgendaId: {}, Associate: {}, Choice: {}.",
                 agenda.getId(), voteRequest.getAssociate(), voteRequest.getChoice());
         if (agenda.getVotes() != null && agenda.getVotes().stream().anyMatch(vote -> vote.getAssociate().equals(voteRequest.getAssociate()))) {
-            log.error("Error - Associate already voted - Agenda identifier: {}, Associate identifier: {}", agenda.getId(), voteRequest.getAssociate());
+            log.error("Erro - Associado já votou - Agenda identifier: {}, Associate identifier: {}", agenda.getId(), voteRequest.getAssociate());
             throw new VoteAlreadyExistsException();
         }
     }
 
     public static void agendaMustNotBeOpen(Agenda agenda) {
-        log.info("Validating... - agendaMustNotBeOpen - Status: {}", agenda.getId());
+        log.info("Validando... - Agenda não deve estar aberta - Status: {}", agenda.getId());
         if (isOpened(agenda)) {
-            log.error("Error - Agenda is already open - AgendaId: {}", agenda.getId());
+            log.error("Erro - Agenda já está aberta - AgendaId: {}", agenda.getId());
             throw new AgendaIsAlreadyOpenException();
         }
     }
