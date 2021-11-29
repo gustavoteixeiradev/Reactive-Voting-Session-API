@@ -6,10 +6,7 @@ import dev.gustavoteixeira.votingsession.dto.request.AgendaRequestDto;
 import dev.gustavoteixeira.votingsession.dto.request.VoteRequestDto;
 import dev.gustavoteixeira.votingsession.dto.response.AgendaResponseDto;
 import dev.gustavoteixeira.votingsession.entity.Agenda;
-import dev.gustavoteixeira.votingsession.exception.AgendaHasAlreadyBeenClosedException;
-import dev.gustavoteixeira.votingsession.exception.AgendaIsAlreadyOpenException;
-import dev.gustavoteixeira.votingsession.exception.AssociateIsNotAbleToVoteException;
-import dev.gustavoteixeira.votingsession.exception.VoteAlreadyExistsException;
+import dev.gustavoteixeira.votingsession.exception.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -45,14 +42,15 @@ public class AgendaUtils {
     }
 
     public static void agendaMustBeOpen(Agenda agenda) {
-        log.info("Start - verifyIfAgendaIsAlreadyOpen - Status: {}", agenda.getId());
+        log.info("Validating... - agendaMustBeOpen - Status: {}", agenda.getId());
         if (!isOpened(agenda)) {
-            log.error("Error - Agenda is already open - AgendaId: {}", agenda.getId());
-            throw new AgendaIsAlreadyOpenException();
+            log.error("Error - Agenda is not open - AgendaId: {}", agenda.getId());
+            throw new AgendaIsNotOpenException();
         }
     }
 
     public static void agendaMustNotHaveBeenClosed(Agenda agenda) {
+        log.info("Validating... - agendaMustNotHaveBeenClosed - Status: {}", agenda.getId());
         if (!isOpened(agenda) && agenda.getStartTime() != null) {
             log.error("Error - Agenda has already been closed - AgendaId: {}", agenda.getId());
             throw new AgendaHasAlreadyBeenClosedException();
@@ -60,7 +58,7 @@ public class AgendaUtils {
     }
 
     public static void verifyIfAssociateIsAbleToVote(UserInfoDto userInfo) {
-        log.info("Start - verifyIfAssociateIsAbleToVote - Status: {}", userInfo.getStatus());
+        log.info("Validating... - verifyIfAssociateIsAbleToVote - User status: {}", userInfo.getStatus());
         if (userInfo.getStatus().equals(UserStatus.UNABLE_TO_VOTE)) {
             log.error("Error - Associate is not able to vote.");
             throw new AssociateIsNotAbleToVoteException();
@@ -74,6 +72,8 @@ public class AgendaUtils {
 
 
     public static void verifyIfAssociateHaveNotVotedYet(Agenda agenda, VoteRequestDto voteRequest) {
+        log.info("Validating... - verifyIfAssociateHaveNotVotedYet - AgendaId: {}, Associate: {}, Choice: {}.",
+                agenda.getId(), voteRequest.getAssociate(), voteRequest.getChoice());
         if (agenda.getVotes() != null && agenda.getVotes().stream().anyMatch(vote -> vote.getAssociate().equals(voteRequest.getAssociate()))) {
             log.error("Error - Associate already voted - Agenda identifier: {}, Associate identifier: {}", agenda.getId(), voteRequest.getAssociate());
             throw new VoteAlreadyExistsException();
@@ -81,7 +81,7 @@ public class AgendaUtils {
     }
 
     public static void agendaMustNotBeOpen(Agenda agenda) {
-        log.info("Start - verifyIfAgendaIsAlreadyOpen - Status: {}", agenda.getId());
+        log.info("Validating... - agendaMustNotBeOpen - Status: {}", agenda.getId());
         if (isOpened(agenda)) {
             log.error("Error - Agenda is already open - AgendaId: {}", agenda.getId());
             throw new AgendaIsAlreadyOpenException();

@@ -20,6 +20,12 @@ public class ControllerAdviceExceptionHandler {
                 .badRequest().body("Agenda Is Already Open.");
     }
 
+    @ExceptionHandler(AgendaIsNotOpenException.class)
+    public ResponseEntity<String> handleAgendaIsNotOpenException(AgendaIsNotOpenException e) {
+        return ResponseEntity
+                .badRequest().body("Agenda Is Not Open.");
+    }
+
     @ExceptionHandler(AgendaHasAlreadyBeenClosedException.class)
     public ResponseEntity<String> handleAgendaHasAlreadyBeenClosedException(AgendaHasAlreadyBeenClosedException e) {
         return ResponseEntity

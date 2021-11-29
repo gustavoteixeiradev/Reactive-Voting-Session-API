@@ -61,24 +61,25 @@ public class AgendaServiceImpl implements AgendaService {
     @Override
     public Mono<Void> voteAgenda(String agendaId, Mono<VoteRequestDto> voteRequest) {
         log.info("AgendaServiceImpl.voteAgenda - Start - AgendaId: {};", agendaId);
-        return voteRequest
-                .doOnNext(vote -> userInfoClient
-                        .getUserInfo(vote.getAssociate())
-                        .doOnNext(AgendaUtils::verifyIfAssociateIsAbleToVote)
-                        .subscribe((userInfo) -> log.info("==========>: {};", userInfo.getStatus())))
-                .flatMap(vote -> repository
-                        .findById(agendaId)
-                        .doOnNext(AgendaUtils::agendaMustBeOpen)
-                        .doOnNext(AgendaUtils::agendaMustNotHaveBeenClosed)
-                        .doOnNext(agenda -> AgendaUtils.verifyIfAssociateHaveNotVotedYet(agenda, vote))
-                        .doOnNext(agenda -> {
+        return repository
+                .findById(agendaId)
+                .doOnNext(AgendaUtils::agendaMustBeOpen)
+//                .doOnNext(AgendaUtils::agendaMustNotHaveBeenClosed)
+                .flatMap(agenda -> voteRequest.flatMap(vote -> userInfoClient.getUserInfo(vote.getAssociate())
+                                .map(userInfoDto -> {
+                                    AgendaUtils.verifyIfAssociateIsAbleToVote(userInfoDto);
+                                    return vote;
+                                }))
+                        .map(vote -> {
+
+                            AgendaUtils.verifyIfAssociateHaveNotVotedYet(agenda, vote);
                             List<Vote> votes = agenda.getVotes() == null ? new ArrayList<>() : agenda.getVotes();
                             votes.add(Vote.builder()
                                     .associate(vote.getAssociate())
                                     .choice(vote.getChoice())
                                     .build());
                             agenda.setVotes(votes);
-                        })
+                            return agenda;})
                         .flatMap(repository::save))
                 .then();
     }
