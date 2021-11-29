@@ -5,10 +5,12 @@
 
 ## 🙋‍♂️🙋‍♀️🙋💁💁‍♂️💁‍♀️
 
-### 🧙 API para Sessão de Votação 
+### 🧙 API para Sessão de Votação
 
 Esse código é a minha implementação utilizando programação Reativa de um desafio técnico para uma oportunidade como
 Desenvolvedor Back-End Java.
+
+<br>
 
 ### ✍️ O Desafio
 
@@ -27,6 +29,39 @@ de abertura ou 1 minutos por default);
 ✅ 3. Receber votos dos associados em pautas (os votos são apenas 'Sim'/'Não'. Cada associado é identificado por um id
 único e pode votar apenas uma vez por pauta);
 <br>
-✅ 4. Contabilizar os votos e dar o resultado da votação na pauta. 
+✅ 4. Contabilizar os votos e dar o resultado da votação na pauta.
 
+<br>
 
+### 🌐 Acesse a API
+
+#### 📚🔗 Documentação
+
+[![Swagger](https://img.shields.io/badge/Swagger-link-007396.svg)](https://reactive-voting-session-api.herokuapp.com/swagger-ui.html)
+
+#### 💙🔗 Para acessar o Health Check:
+
+[![Health Check](https://img.shields.io/badge/Actuator-link-007396.svg)](https://reactive-voting-session-api.herokuapp.com/actuator/health)
+
+<br>
+
+### 🟦🔸🟡 DevOps 🟢🔸🔶
+
+#### ✅ Pipeline com Github Actions
+
+Sou um grande fã de CI/CD. Por isso, adicionei nesse projeto uma pipeline, utilizando o GitHub Actions, para executar
+ações automatizadas que facilitam a minha vida.
+
+![img.png](img.png)
+
+#### #️⃣ A pipeline é constituída das seguintes etapas:
+
+1️⃣ Build: onde é executado o build da aplicação, para validar que ela gera o executável com sucesso;
+
+2️⃣ Unit Tests: onde são executados os testes unitários da aplicação;
+
+3️⃣ Code Quality on Sonar: onde o Sonarcloud faz a análise da qualidade e cobertura do código;
+
+4️⃣ Publish on Docker Hub: nessa etapa cria o container da aplicação e então publica ela no Docker Hub;
+
+5️⃣ Deploy to Heroku: nessa etapa acontece o deploy da aplicação no Heroku;
