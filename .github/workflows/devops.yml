@@ -102,3 +102,17 @@ jobs:
             teixeira963/reactive-voting-session-api:latest
             teixeira963/reactive-voting-session-api:${{ github.run_number }}
           push: true
+
+  heroku:
+    name: Deploy to Heroku
+    runs-on: ubuntu-18.04
+    needs: [ docker ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.8.8
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          heroku_app_name: ${{secrets.HEROKU_APP}}
