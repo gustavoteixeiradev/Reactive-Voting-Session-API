@@ -39,6 +39,10 @@ test {
 	useJUnitPlatform()
 }
 
+task stage {
+	dependsOn build
+}
+
 jacocoTestReport {
 	reports {
 		xml.enabled true
