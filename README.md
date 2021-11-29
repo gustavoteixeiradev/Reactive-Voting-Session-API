@@ -1,4 +1,5 @@
 [![CI](https://github.com/gustavoteixeiradev/Reactive-Voting-Session-API/actions/workflows/devops.yml/badge.svg)](https://github.com/gustavoteixeiradev/Reactive-Voting-Session-API/actions/workflows/devops.yml)
+[![GitHub license](https://img.shields.io/github/license/gustavoteixeiradev/Reactive-Voting-Session-API)](https://github.com/gustavoteixeiradev/Reactive-Voting-Session-API/blob/main/LICENSE)
 
 # Reactive Voting Session API
 
