@@ -106,7 +106,7 @@ jobs:
   heroku:
     name: Deploy to Heroku
     runs-on: ubuntu-18.04
-    needs: [ docker ]
+    needs: [ sonar ]
 
     steps:
       - uses: actions/checkout@v2
